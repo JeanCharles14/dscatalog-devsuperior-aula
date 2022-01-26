@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +26,9 @@ public class CategoryService {
 	private CategoryRepository repository;
 
 	@Transactional(readOnly = true)
-	public Page<CategoryDTO> findallPaged(PageRequest pageRequest) {
-		Page<Category> list = repository.findAll(pageRequest);
-		return list.map(x -> new CategoryDTO(x));		
+	public Page<CategoryDTO> findallPaged(Pageable pageable) {
+		Page<Category> list = repository.findAll(pageable);
+		return list.map(x -> new CategoryDTO(x));
 	}
 
 	@Transactional(readOnly = true)
@@ -48,27 +49,23 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
-		Category entity = repository.getOne(id);
-		entity.setName(dto.getName());
-		entity = repository.save(entity);
-		return new CategoryDTO(entity);
-		}
-		catch(EntityNotFoundException e) {
-			throw new ResourceNotFoundExceptions("Id not found" + id); 
+			Category entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity = repository.save(entity);
+			return new CategoryDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundExceptions("Id not found" + id);
 		}
 	}
 
 	public void delete(Long id) {
 		try {
-		repository.deleteById(id);
-		}
-		catch(EmptyResultDataAccessException e) {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundExceptions("Id not found" + id);
-		}
-		catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity Violation");
-			
+
 		}
 	}
 }
-
