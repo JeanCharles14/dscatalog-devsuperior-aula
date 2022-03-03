@@ -53,7 +53,7 @@ public class CategoryService {
 			entity = repository.save(entity);
 			return new CategoryDTO(entity);
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundExceptions("Id not found" + id);
+			throw new ResourceNotFoundExceptions("Id not found " + id);
 		}
 	}
 
@@ -61,9 +61,9 @@ public class CategoryService {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundExceptions("Id not found" + id);
+			throw new ResourceNotFoundExceptions("Id not found " + id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException("Integrity Violation");
+			throw new DatabaseException("Integrity Violation ");
 
 		}
 	}
