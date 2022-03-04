@@ -75,7 +75,6 @@ public class ProductRepositoryTests {
 	}
 
 	@Test
-
 	public void deleteShoudThrowEmptyResultDataAccessExceptionWhenIdDoesNotExisting() {
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 			repository.deleteById(nonExistingId);
