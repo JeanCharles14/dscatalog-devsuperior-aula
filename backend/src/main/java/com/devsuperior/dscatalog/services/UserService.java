@@ -58,6 +58,7 @@ public class UserService implements UserDetailsService {
 
 	@Transactional
 	public UserDTO insert(UserInsertDTO dto) {
+		@SuppressWarnings("deprecation")
 		User entity = new User();
 		copyDTOtoEntity(dto, entity);
 		entity.setPassword(encoder.encode(dto.getPassword()));
